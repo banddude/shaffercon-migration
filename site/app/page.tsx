@@ -82,6 +82,16 @@ export default async function Home() {
     paragraphs = paragraphs.slice(1);
   }
 
+  // Detect headings: short lines (under 80 chars) without punctuation at end
+  const isHeading = (text: string) => {
+    const trimmed = text.trim();
+    return (
+      trimmed.length < 80 &&
+      !trimmed.match(/[.?!,;:]$/) &&
+      trimmed.split(' ').length <= 6 // max 6 words
+    );
+  };
+
   return (
     <main className="w-full">
       {/* Hero Section */}
@@ -98,11 +108,18 @@ export default async function Home() {
         <Section padding="lg">
           <Container maxWidth="lg">
             <div className="space-y-6 max-w-none">
-              {paragraphs.map((para, idx) => (
-                <Paragraph key={idx} className="mb-0">
-                  {para}
-                </Paragraph>
-              ))}
+              {paragraphs.map((para, idx) => {
+                const heading = isHeading(para);
+                return heading ? (
+                  <h2 key={idx} className="text-3xl md:text-4xl font-bold leading-tight">
+                    {para}
+                  </h2>
+                ) : (
+                  <Paragraph key={idx} className="mb-0">
+                    {para}
+                  </Paragraph>
+                );
+              })}
             </div>
           </Container>
         </Section>
