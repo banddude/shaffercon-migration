@@ -1,14 +1,15 @@
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
+import ContactForm from "@/app/components/ContactForm";
 
-// Get homepage data
-async function getHomePage() {
+// Get contact page data
+async function getContactPage() {
   const db = getDb();
   const page = db.prepare(`
     SELECT p.id, p.slug, p.title, p.date, p.meta_title, p.meta_description, p.canonical_url, p.og_image
     FROM pages_all p
-    WHERE p.slug = 'home'
+    WHERE p.slug = 'contact-us'
   `).get() as any;
 
   if (!page) return null;
@@ -30,12 +31,13 @@ async function getHomePage() {
   };
 }
 
+// Generate metadata
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getHomePage();
+  const page = await getContactPage();
 
   if (!page) {
     return {
-      title: "Home",
+      title: "Contact Us",
     };
   }
 
@@ -50,8 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function Home() {
-  const page = await getHomePage();
+// Page component
+export default async function ContactPage() {
+  const page = await getContactPage();
 
   if (!page) {
     notFound();
@@ -67,22 +70,12 @@ export default async function Home() {
             <h2 className="text-2xl font-bold mb-4">{section.heading}</h2>
           )}
           {section.content && (
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: section.content }} />
+            <div className="prose max-w-none mb-6" dangerouslySetInnerHTML={{ __html: section.content }} />
           )}
         </div>
       ))}
 
-      {/* CTA */}
-      <div className="bg-blue-600 text-white p-8 rounded-lg text-center mt-12">
-        <h2 className="text-3xl font-bold mb-4">Get Started Today</h2>
-        <p className="text-xl mb-6">Contact us for a free consultation!</p>
-        <a
-          href="/contact-us"
-          className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
-        >
-          Contact Us
-        </a>
-      </div>
+      <ContactForm title="Get in Touch" />
     </div>
   );
 }

@@ -6,7 +6,12 @@ let db: Database.Database | null = null;
 export function getDb() {
   if (!db) {
     const dbPath = path.join(process.cwd(), "data", "site.db");
-    db = new Database(dbPath, { readonly: true });
+    try {
+      db = new Database(dbPath, { readonly: true });
+    } catch (error) {
+      console.error("Failed to open database at:", dbPath);
+      throw error;
+    }
   }
   return db;
 }

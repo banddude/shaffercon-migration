@@ -1,4 +1,4 @@
-import { getAllPages, type Page } from "@/lib/pages";
+import { getDb } from "@/lib/db";
 import Link from "next/link";
 import { classNames, theme } from "@/app/styles/theme";
 
@@ -7,26 +7,29 @@ interface ServiceAreaLinksProps {
 }
 
 export default function ServiceAreaLinks({ location }: ServiceAreaLinksProps) {
-  // Get all pages and filter for service area pages matching this location
-  const allPages = getAllPages();
+  // Get services for this location from database
+  const db = getDb();
 
-  const residential = allPages.filter((page: Page) =>
-    page.slug.includes(`residential-`) && page.slug.includes(location)
-  );
+  const residential = db.prepare(`
+    SELECT service_name, service_type
+    FROM service_pages
+    WHERE location = ? AND service_type = 'residential'
+    ORDER BY service_name
+    LIMIT 20
+  `).all(location) as Array<{ service_name: string; service_type: string }>;
 
-  const commercial = allPages.filter((page: Page) =>
-    page.slug.includes(`commercial-`) && page.slug.includes(location)
-  );
+  const commercial = db.prepare(`
+    SELECT service_name, service_type
+    FROM service_pages
+    WHERE location = ? AND service_type = 'commercial'
+    ORDER BY service_name
+    LIMIT 20
+  `).all(location) as Array<{ service_name: string; service_type: string }>;
 
-  // Helper function to format service name from slug
-  const formatServiceName = (slug: string): string => {
-    // Extract the service part after residential- or commercial-
-    const parts = slug.split('/');
-    const servicePart = parts[parts.length - 1];
-    const nameWithoutPrefix = servicePart.replace(/^(residential|commercial)-/, '');
-
+  // Helper function to format service name
+  const formatServiceName = (serviceName: string): string => {
     // Convert dashes to spaces and capitalize each word
-    return nameWithoutPrefix
+    return serviceName
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
@@ -40,10 +43,10 @@ export default function ServiceAreaLinks({ location }: ServiceAreaLinksProps) {
             Residential Services in {location.charAt(0).toUpperCase() + location.slice(1)}
           </h2>
           <ul className="list-disc pl-6 space-y-2">
-            {residential.map((service) => (
-              <li key={service.slug}>
-                <Link href={`/${service.slug}`} className={classNames.link}>
-                  {formatServiceName(service.slug)}
+            {residential.map((service, index) => (
+              <li key={index}>
+                <Link href={`/service-areas/${location}/residential-${service.service_name}`} className={classNames.link}>
+                  {formatServiceName(service.service_name)}
                 </Link>
               </li>
             ))}
@@ -57,10 +60,10 @@ export default function ServiceAreaLinks({ location }: ServiceAreaLinksProps) {
             Commercial Services in {location.charAt(0).toUpperCase() + location.slice(1)}
           </h2>
           <ul className="list-disc pl-6 space-y-2">
-            {commercial.map((service) => (
-              <li key={service.slug}>
-                <Link href={`/${service.slug}`} className={classNames.link}>
-                  {formatServiceName(service.slug)}
+            {commercial.map((service, index) => (
+              <li key={index}>
+                <Link href={`/service-areas/${location}/commercial-${service.service_name}`} className={classNames.link}>
+                  {formatServiceName(service.service_name)}
                 </Link>
               </li>
             ))}

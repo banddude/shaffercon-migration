@@ -1,14 +1,15 @@
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
+import Link from "next/link";
 
-// Get homepage data
-async function getHomePage() {
+// Get service areas page data
+async function getServiceAreasPage() {
   const db = getDb();
   const page = db.prepare(`
     SELECT p.id, p.slug, p.title, p.date, p.meta_title, p.meta_description, p.canonical_url, p.og_image
     FROM pages_all p
-    WHERE p.slug = 'home'
+    WHERE p.slug = 'service-areas'
   `).get() as any;
 
   if (!page) return null;
@@ -24,18 +25,30 @@ async function getHomePage() {
     content: string;
   }>;
 
+  // Get all location pages
+  const locations = db.prepare(`
+    SELECT location_name, location_slug
+    FROM location_pages
+    ORDER BY location_name
+  `).all() as Array<{
+    location_name: string;
+    location_slug: string;
+  }>;
+
   return {
     ...page,
     sections,
+    locations,
   };
 }
 
+// Generate metadata
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getHomePage();
+  const page = await getServiceAreasPage();
 
   if (!page) {
     return {
-      title: "Home",
+      title: "Service Areas",
     };
   }
 
@@ -50,8 +63,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function Home() {
-  const page = await getHomePage();
+// Page component
+export default async function ServiceAreasPage() {
+  const page = await getServiceAreasPage();
 
   if (!page) {
     notFound();
@@ -72,10 +86,28 @@ export default async function Home() {
         </div>
       ))}
 
+      {/* Locations Grid */}
+      {page.locations && page.locations.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-3xl font-bold mb-6">Areas We Serve</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {page.locations.map((location: any, index: number) => (
+              <Link
+                key={index}
+                href={`/service-areas/${location.location_slug}`}
+                className="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition text-center"
+              >
+                <h3 className="text-xl font-semibold text-gray-800">{location.location_name}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* CTA */}
       <div className="bg-blue-600 text-white p-8 rounded-lg text-center mt-12">
-        <h2 className="text-3xl font-bold mb-4">Get Started Today</h2>
-        <p className="text-xl mb-6">Contact us for a free consultation!</p>
+        <h2 className="text-3xl font-bold mb-4">Need Service In Your Area?</h2>
+        <p className="text-xl mb-6">Contact us to learn more about our services!</p>
         <a
           href="/contact-us"
           className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
