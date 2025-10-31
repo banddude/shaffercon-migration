@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
-import { Section, Container, PageTitle, Paragraph } from "@/app/components/UI";
+import { Section, Container, PageTitle, Paragraph, SectionHeading } from "@/app/components/UI";
 
 // Get homepage data
 async function getHomePage() {
@@ -111,9 +111,9 @@ export default async function Home() {
               {paragraphs.map((para, idx) => {
                 const heading = isHeading(para);
                 return heading ? (
-                  <h2 key={idx} className="text-3xl md:text-4xl font-bold leading-tight">
+                  <SectionHeading key={idx} className="mb-0">
                     {para}
-                  </h2>
+                  </SectionHeading>
                 ) : (
                   <Paragraph key={idx} className="mb-0">
                     {para}
