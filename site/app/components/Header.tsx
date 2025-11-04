@@ -19,6 +19,7 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [isDark, setIsDark] = useState(false);
   const pathname = usePathname();
+  const isHomePage = pathname === '/' || pathname === '/shaffercon-migration' || pathname === '/shaffercon-migration/';
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -44,8 +45,8 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
       className="sticky top-0 z-50"
       style={{
         background: "transparent",
-        backdropFilter: "blur(20px)",
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        backdropFilter: isHomePage ? "blur(10px)" : "blur(20px)",
+        backgroundColor: isHomePage ? "rgba(0, 0, 0, 0.1)" : "rgba(0, 0, 0, 0.3)",
         borderBottom: "none",
       }}
     >
