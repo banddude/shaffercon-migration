@@ -7,6 +7,9 @@ import { theme } from "@/app/styles/theme";
 export const metadata: Metadata = {
   title: "Shaffer Construction",
   description: "Los Angeles electrical contractor specializing in EV charging installation",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
