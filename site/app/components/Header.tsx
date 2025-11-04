@@ -54,7 +54,7 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
-              src={isDark ? "/brand-assets/Shaffer-Construction-Logo-dark-mode.png" : "/brand-assets/Shaffer-Construction-Logo-light-mode.png"}
+              src={isDark ? "/shaffercon-migration/brand-assets/Shaffer-Construction-Logo-dark-mode.png" : "/shaffercon-migration/brand-assets/Shaffer-Construction-Logo-light-mode.png"}
               alt="Shaffer Construction"
               width={180}
               height={75}
