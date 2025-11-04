@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
+    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: "https",
@@ -8,6 +10,8 @@ const nextConfig = {
       },
     ],
   },
+  // Ensure trailing slashes for GitHub Pages
+  trailingSlash: true,
 };
 
 export default nextConfig;

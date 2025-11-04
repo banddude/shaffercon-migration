@@ -22,22 +22,53 @@ export function AppleHero({
   imageFit = "cover",
   children,
 }: AppleHeroProps) {
+  const isVideo = image?.endsWith('.mp4') || image?.endsWith('.webm');
+  const isGif = image?.endsWith('.gif');
+
   return (
     <section
       className="relative w-full overflow-hidden"
       style={{ background: "var(--background)" }}
     >
-      {/* Background Image */}
+      {/* Background Video, GIF, or Image */}
       {image && (
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: imageFit,
-            backgroundPosition: "center",
-            filter: "brightness(0.95)",
-          }}
-        />
+        <div className="absolute inset-0 z-0">
+          {isVideo ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              style={{
+                objectFit: imageFit,
+                filter: "brightness(0.7)",
+              }}
+            >
+              <source src={image} type={`video/${image.endsWith('.webm') ? 'webm' : 'mp4'}`} />
+            </video>
+          ) : isGif ? (
+            <img
+              src={image}
+              alt="Background"
+              className="w-full h-full object-cover"
+              style={{
+                objectFit: imageFit,
+                filter: "brightness(0.7)",
+              }}
+            />
+          ) : (
+            <div
+              className="w-full h-full"
+              style={{
+                backgroundImage: `url(${image})`,
+                backgroundSize: imageFit,
+                backgroundPosition: "center",
+                filter: "brightness(0.95)",
+              }}
+            />
+          )}
+        </div>
       )}
 
       {/* Overlay for text contrast */}
@@ -45,8 +76,7 @@ export function AppleHero({
         <div
           className="absolute inset-0 z-1"
           style={{
-            backgroundColor: "rgba(0, 0, 0, 0.2)",
-            opacity: 0.2,
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
         />
       )}

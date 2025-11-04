@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ZappyBird - Electrician Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <div id="start-screen" class="screen">
+            <h1>⚡ ZAPPYBIRD ⚡</h1>
+            <p class="subtitle">Navigate the electrical hazards!</p>
+            <button id="start-btn" class="pixel-btn">START GAME</button>
+            <div class="instructions">
+                <p>Tap or Click to flap</p>
+                <p>Avoid the exposed wires!</p>
+            </div>
+        </div>
+        <div id="game-over-screen" class="screen hidden">
+            <h2>SHOCKED! ⚡</h2>
+            <p id="final-score">Score: 0</p>
+            <p id="high-score">High Score: 0</p>
+            <button id="restart-btn" class="pixel-btn">TRY AGAIN</button>
+        </div>
+        <div id="hud">
+            <div id="score">Score: 0</div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>

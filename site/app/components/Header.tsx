@@ -41,10 +41,12 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
 
   return (
     <header
-      className="sticky top-0 z-50 dark:bg-black"
+      className="sticky top-0 z-50"
       style={{
-        background: "var(--background)",
-        borderBottom: "1px solid var(--secondary)",
+        background: "transparent",
+        backdropFilter: "blur(20px)",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        borderBottom: "none",
       }}
     >
       <div className={classNames.container}>

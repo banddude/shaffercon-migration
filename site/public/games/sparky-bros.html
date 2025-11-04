@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Sparky Bros - Electrician Adventure</title>
+    <link rel="stylesheet" href="sparky-bros.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="start-screen" class="screen">
+            <h1>⚡ SPARKY BROS ⚡</h1>
+            <p class="subtitle">The Electrician's Adventure</p>
+            <button id="start-btn" class="pixel-btn">START GAME</button>
+            <div class="instructions">
+                <p><strong>CONTROLS:</strong></p>
+                <p>Touch Left/Right: Move</p>
+                <p>Touch Jump Button: Jump</p>
+                <p>Enter electrical panels to warp!</p>
+                <p>Collect wire nuts and avoid sparks!</p>
+            </div>
+            <div id="mobile-controls">
+                <div class="d-pad">
+                    <button id="left-btn" class="control-btn">◄</button>
+                    <button id="right-btn" class="control-btn">►</button>
+                </div>
+                <div class="action-buttons">
+                    <button id="jump-btn" class="control-btn">JUMP</button>
+                </div>
+            </div>
+        </div>
+        <div id="game-over-screen" class="screen hidden">
+            <h2>SHOCKED OUT! ⚡</h2>
+            <p id="final-score">Score: 0</p>
+            <button id="restart-btn" class="pixel-btn">TRY AGAIN</button>
+        </div>
+        <div id="win-screen" class="screen hidden">
+            <h2>LEVEL COMPLETE! ⚡</h2>
+            <p id="win-score">Score: 0</p>
+            <button id="next-level-btn" class="pixel-btn">NEXT LEVEL</button>
+        </div>
+        <div id="hud">
+            <div id="score">SCORE: 0</div>
+            <div id="lives">LIVES: ❤️❤️❤️</div>
+            <div id="coins">NUTS: 0</div>
+        </div>
+        <div id="mobile-controls-game">
+            <div class="d-pad">
+                <button id="left-btn-game" class="control-btn">◄</button>
+                <button id="right-btn-game" class="control-btn">►</button>
+            </div>
+            <div class="action-buttons">
+                <button id="jump-btn-game" class="control-btn">JUMP</button>
+            </div>
+        </div>
+    </div>
+    <script src="sparky-bros.js"></script>
+</body>
+</html>
