@@ -8,6 +8,7 @@ import {
   AppleGrid,
 } from "@/app/components/UI/AppleStyle";
 import { useEffect, useState } from "react";
+import { withBasePath } from "@/app/config";
 
 export default function GamesPage() {
   const [leaderboards, setLeaderboards] = useState<{
@@ -59,13 +60,13 @@ export default function GamesPage() {
     {
       title: "Zappy Bird",
       description: "Navigate through electrical obstacles in this electrifying adventure! Tap to make Zappy fly and avoid the pipes.",
-      href: "/shaffercon-migration/games/index.html",
+      href: withBasePath("games/zappy-bird.html"),
       icon: "⚡",
     },
     {
       title: "Sparky Bros",
       description: "Join the Sparky Bros on their electrical engineering adventure! Jump and collect power-ups in this exciting platformer.",
-      href: "/shaffercon-migration/games/sparky-bros.html",
+      href: withBasePath("games/sparky-bros.html"),
       icon: "🔌",
     },
   ];
