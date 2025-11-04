@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/shaffercon-migration',
+  assetPrefix: '/shaffercon-migration',
   images: {
     unoptimized: true, // Required for static export
     remotePatterns: [
