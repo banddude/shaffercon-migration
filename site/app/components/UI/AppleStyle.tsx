@@ -111,7 +111,7 @@ export function AppleHero({
               }}
             >
               <img
-                src={ASSET_PATH("/brand-assets/Shaffer-Construction-Logo-light-mode.png")}
+                src={ASSET_PATH("/brand-assets/Shaffer-Construction-Logo-light-mode-cropped.png")}
                 alt="Shaffer Construction"
                 className="mx-auto"
                 style={{
