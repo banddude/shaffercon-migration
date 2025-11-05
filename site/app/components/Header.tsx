@@ -22,7 +22,7 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
   const isHomePage = pathname === '/';
   const isCommercialEVPage = pathname === '/commercial-electric-vehicle-chargers' || pathname === '/commercial-electric-vehicle-chargers/';
   const isVideoOverlayPage = isHomePage || isCommercialEVPage;
-  const showWhiteText = isVideoOverlayPage || isDark;
+  const showWhiteText = isVideoOverlayPage;
 
   // Debug logging
   if (typeof window !== 'undefined' && isCommercialEVPage) {
