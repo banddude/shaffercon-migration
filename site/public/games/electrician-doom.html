@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Electrician Doom - Shock to the System</title>
+    <link rel="stylesheet" href="electrician-doom.css">
+    <style>
+        #game-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            border-bottom: 2px solid #FFD700;
+        }
+        #game-nav a {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        #game-nav a:hover {
+            color: #FFA500;
+        }
+        #game-nav .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        #game-nav .nav-logo {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        #game-container {
+            padding-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <nav id="game-nav">
+        <a href="../../" class="nav-logo">⚡ SHAFFER CONSTRUCTION</a>
+        <div class="nav-links">
+            <a href="../../games">← Back to Games</a>
+        </div>
+    </nav>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>⚡ ELECTRICIAN DOOM ⚡</h1>
+            <p class="subtitle">EPISODE 1: SHOCK TO THE SYSTEM</p>
+            <div class="episode-info">
+                <p>9 LEVELS OF ELECTRICAL MAYHEM</p>
+                <p>Fight through the corrupted power plant</p>
+                <p>Defeat the Master Breaker</p>
+            </div>
+            <button id="start-btn" class="pixel-btn">START EPISODE</button>
+            <div class="instructions">
+                <h3>CONTROLS:</h3>
+                <p><strong>WASD</strong> - Move</p>
+                <p><strong>Arrow Keys / Mouse</strong> - Look</p>
+                <p><strong>Space</strong> - Shoot</p>
+                <p><strong>1-6</strong> - Switch Weapons</p>
+                <p><strong>E</strong> - Use/Open Doors</p>
+                <p><strong>Mobile:</strong> Use on-screen controls</p>
+            </div>
+            <div class="story">
+                <h3>THE STORY:</h3>
+                <p>The power plant has been overtaken by corrupted electrical entities.
+                As the only electrician brave enough to enter, you must fight your way
+                through 9 levels of electrical hazards, possessed equipment, and rogue
+                robots to reach the Master Breaker and restore power to the city.</p>
+            </div>
+        </div>
+
+        <!-- Level Complete Screen -->
+        <div id="level-complete-screen" class="screen hidden">
+            <h2>LEVEL COMPLETE! ⚡</h2>
+            <div id="level-stats">
+                <p>Level: <span id="completed-level"></span></p>
+                <p>Kills: <span id="kill-count"></span></p>
+                <p>Items: <span id="item-count"></span></p>
+                <p>Secrets: <span id="secret-count"></span></p>
+                <p>Time: <span id="level-time"></span></p>
+            </div>
+            <button id="next-level-btn" class="pixel-btn">CONTINUE</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <h2>SHOCKED OUT! ⚡</h2>
+            <p id="death-message">You've been electrocuted!</p>
+            <div id="game-stats">
+                <p>Level Reached: <span id="final-level"></span></p>
+                <p>Total Kills: <span id="total-kills"></span></p>
+            </div>
+            <button id="restart-btn" class="pixel-btn">TRY AGAIN</button>
+            <button id="main-menu-btn" class="pixel-btn">MAIN MENU</button>
+        </div>
+
+        <!-- Victory Screen -->
+        <div id="victory-screen" class="screen hidden">
+            <h2>⚡ EPISODE COMPLETE! ⚡</h2>
+            <div class="victory-message">
+                <p>CONGRATULATIONS!</p>
+                <p>You have defeated the Master Breaker and restored power to the city!</p>
+                <p>The electrical grid is safe once again.</p>
+            </div>
+            <div id="final-stats">
+                <h3>FINAL STATISTICS:</h3>
+                <p>Total Kills: <span id="victory-kills"></span></p>
+                <p>Total Items: <span id="victory-items"></span></p>
+                <p>Total Secrets: <span id="victory-secrets"></span></p>
+                <p>Total Time: <span id="victory-time"></span></p>
+            </div>
+            <button id="play-again-btn" class="pixel-btn">PLAY AGAIN</button>
+        </div>
+
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div id="health-bar">
+                <div class="bar-label">HEALTH</div>
+                <div class="bar-container">
+                    <div id="health-fill" class="bar-fill"></div>
+                </div>
+                <div id="health-value" class="bar-value">100</div>
+            </div>
+
+            <div id="armor-bar">
+                <div class="bar-label">ARMOR</div>
+                <div class="bar-container">
+                    <div id="armor-fill" class="bar-fill"></div>
+                </div>
+                <div id="armor-value" class="bar-value">0</div>
+            </div>
+
+            <div id="weapon-display">
+                <div id="weapon-name">VOLTAGE TESTER</div>
+                <div id="ammo-count">∞</div>
+            </div>
+
+            <div id="keys-display">
+                <div id="yellow-key" class="key hidden">🔑</div>
+                <div id="red-key" class="key hidden">🔑</div>
+                <div id="blue-key" class="key hidden">🔑</div>
+            </div>
+
+            <div id="level-display">
+                <div id="level-name">E1M1: POWER PLANT</div>
+            </div>
+
+            <div id="face-display">😊</div>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div id="mobile-controls" class="hidden">
+            <div class="move-controls">
+                <button id="btn-forward" class="control-btn">▲</button>
+                <div class="horizontal-controls">
+                    <button id="btn-left" class="control-btn">◄</button>
+                    <button id="btn-backward" class="control-btn">▼</button>
+                    <button id="btn-right" class="control-btn">►</button>
+                </div>
+            </div>
+            <div class="action-controls">
+                <button id="btn-shoot" class="control-btn shoot-btn">FIRE</button>
+                <button id="btn-use" class="control-btn">USE</button>
+                <button id="btn-strafe-left" class="control-btn">⟵</button>
+                <button id="btn-strafe-right" class="control-btn">⟶</button>
+            </div>
+        </div>
+
+        <!-- Message Display -->
+        <div id="message-display" class="hidden"></div>
+    </div>
+    <script src="electrician-doom.js"></script>
+</body>
+</html>
