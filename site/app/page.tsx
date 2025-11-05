@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
 import { theme } from "@/app/styles/theme";
+import { ASSET_PATH } from "@/app/config";
 import {
   AppleHero,
   AppleSection,
@@ -111,13 +112,14 @@ export default async function Home() {
   ];
 
   return (
-    <main className="w-full overflow-hidden" style={{ marginTop: "-80px" }}>
+    <main className="w-full overflow-hidden">
       {/* Hero Section */}
       {heroSection && heroSection.heading && (
         <AppleHero
           title={heroSection.heading}
           subtitle={heroSection.content || "Leading electrical contractor in Los Angeles"}
-          image={heroSection.image_url}
+          image={heroSection.image_url ? ASSET_PATH(heroSection.image_url) : undefined}
+          showLogo={true}
         >
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <AppleButton href="/contact-us" variant="primary" size="lg">

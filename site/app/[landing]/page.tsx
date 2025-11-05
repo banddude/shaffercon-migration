@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
 import { Section, Container, PageTitle, SectionHeading, Subheading, ContentBox, Button } from "@/app/components/UI";
+import { AppleHero } from "@/app/components/UI/AppleStyle";
 import CTA from "@/app/components/CTA";
+import { ASSET_PATH } from "@/app/config";
 
 interface PageProps {
   params: Promise<{
@@ -35,7 +37,7 @@ async function getServiceLandingPage(slug: string) {
   const db = getDb();
   const page = db.prepare(`
     SELECT p.id, p.slug, p.title, p.date, p.meta_title, p.meta_description, p.canonical_url, p.og_image,
-           slp.id as landing_id, slp.page_title, slp.hero_text
+           slp.id as landing_id, slp.page_title, slp.hero_text, slp.hero_image
     FROM pages_all p
     JOIN service_landing_pages slp ON p.id = slp.page_id
     WHERE p.slug = ?
@@ -98,16 +100,24 @@ export default async function ServiceLandingPage({ params }: PageProps) {
   }
 
   return (
-    <main className="w-full">
+    <main className="w-full overflow-hidden">
       {/* Hero Section */}
-      <Section border="bottom">
-        <Container>
-          <PageTitle>{page.page_title || page.title}</PageTitle>
-          {page.hero_text && (
-            <p className="text-base leading-relaxed mt-4">{page.hero_text}</p>
-          )}
-        </Container>
-      </Section>
+      {page.hero_image ? (
+        <AppleHero
+          title={page.page_title || page.title}
+          subtitle={page.hero_text}
+          image={ASSET_PATH(page.hero_image)}
+        />
+      ) : (
+        <Section border="bottom">
+          <Container>
+            <PageTitle>{page.page_title || page.title}</PageTitle>
+            {page.hero_text && (
+              <p className="text-base leading-relaxed mt-4">{page.hero_text}</p>
+            )}
+          </Container>
+        </Section>
+      )}
 
       {/* Dynamic Sections */}
       {page.sections && page.sections.map((section: any, index: number) => (

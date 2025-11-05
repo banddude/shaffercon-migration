@@ -2,6 +2,7 @@
 
 import React, { ReactNode } from "react";
 import { theme, typographySizes } from "@/app/styles/theme";
+import { ASSET_PATH } from "@/app/config";
 
 /**
  * Apple-style Hero Section
@@ -13,6 +14,7 @@ interface AppleHeroProps {
   image?: string;
   imageFit?: "cover" | "contain";
   children?: ReactNode;
+  showLogo?: boolean;
 }
 
 export function AppleHero({
@@ -21,6 +23,7 @@ export function AppleHero({
   image,
   imageFit = "cover",
   children,
+  showLogo = false,
 }: AppleHeroProps) {
   const isVideo = image?.endsWith('.mp4') || image?.endsWith('.webm');
   const isGif = image?.endsWith('.gif');
@@ -41,13 +44,15 @@ export function AppleHero({
               loop
               muted
               playsInline
+              preload="auto"
               className="w-full h-full object-cover"
               style={{
                 objectFit: imageFit,
                 filter: "brightness(0.7)",
               }}
             >
-              <source src={image} type={`video/${image.endsWith('.webm') ? 'webm' : 'mp4'}`} />
+              <source src={image} type="video/mp4; codecs=avc1.42E01E,mp4a.40.2" />
+              Your browser does not support the video tag.
             </video>
           ) : isGif ? (
             <img
@@ -83,15 +88,47 @@ export function AppleHero({
         />
       )}
 
+      {/* Bottom gradient fade */}
+      {image && (
+        <div
+          className="absolute bottom-0 left-0 right-0 z-2 pointer-events-none"
+          style={{
+            height: "75px",
+            background: "linear-gradient(to top, var(--background), transparent)",
+          }}
+        />
+      )}
+
       {/* Content */}
-      <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center px-6 py-20" style={{ paddingTop: "80px" }}>
+      <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center px-6 py-20">
         <div className="max-w-5xl mx-auto text-center">
+          {/* Logo above title (only shows when showLogo is true) */}
+          {image && showLogo && (
+            <div
+              className="mb-8"
+              style={{
+                animation: "fadeInUp 0.8s ease-out",
+              }}
+            >
+              <img
+                src={ASSET_PATH("/brand-assets/Shaffer-Construction-Logo-light-mode.png")}
+                alt="Shaffer Construction"
+                className="mx-auto"
+                style={{
+                  width: "500px",
+                  height: "auto",
+                  filter: "drop-shadow(0 0 0.5px rgba(2, 132, 199, 0.2)) drop-shadow(0 0 0.5px rgba(2, 132, 199, 0.2))",
+                }}
+              />
+            </div>
+          )}
+
           {/* Main Title */}
           <h1
             className={`${typographySizes.pageTitle} font-black tracking-tight leading-tight mb-6`}
             style={{
               color: image ? "#ffffff" : "var(--text)",
-              animation: "fadeInUp 0.8s ease-out",
+              animation: "fadeInUp 0.8s ease-out 0.1s both",
             }}
           >
             {title}
@@ -162,14 +199,14 @@ export function AppleCard({
 }: AppleCardProps) {
   const content = (
     <div
-      className="group w-full h-full flex flex-col overflow-hidden transition-all duration-500"
+      className="group w-full h-full flex flex-col overflow-hidden"
       style={{
         background: "var(--background)",
         border: "1px solid var(--secondary)",
         borderRadius: "1.5rem",
-        padding: "2rem",
+        padding: "1.5rem",
         backdropFilter: "blur(10px)",
-        transitionDuration: "0.5s",
+        transition: "border 0.3s, box-shadow 0.3s",
       }}
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLElement).style.border = "1px solid var(--secondary)";
@@ -199,7 +236,7 @@ export function AppleCard({
       {/* Icon only if no image */}
       {icon && !image && (
         <div
-          className={`h-24 flex items-center justify-center ${typographySizes.subheading} group-hover:scale-110 transition-transform duration-500`}
+          className={`h-20 flex items-center justify-center ${typographySizes.subheading} group-hover:scale-110 transition-transform duration-500`}
           style={{
             background: "var(--background)",
           }}
@@ -209,15 +246,15 @@ export function AppleCard({
       )}
 
       {/* Content */}
-      <div className="flex-grow p-8 flex flex-col">
+      <div className="flex-grow pt-4 flex flex-col">
         <h3
-          className={`${typographySizes.subheading} font-semibold mb-3 transition-colors duration-300`}
+          className={`${typographySizes.subheading} font-semibold mb-2 transition-colors duration-300`}
           style={{ color: "var(--text)" }}
         >
           {title}
         </h3>
         <p
-          className={`${typographySizes.paragraph} leading-relaxed flex-grow mb-6`}
+          className={`${typographySizes.paragraph} leading-relaxed flex-grow mb-4`}
           style={{ color: "var(--secondary)" }}
         >
           {description}
@@ -271,8 +308,8 @@ export function AppleGrid({
   const columnMap = {
     1: "grid-cols-1",
     2: "grid-cols-1 md:grid-cols-2",
-    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+    3: "grid-cols-1 md:grid-cols-3",
+    4: "grid-cols-1 md:grid-cols-4",
   };
 
   const gapMap = {
@@ -379,8 +416,8 @@ export function AppleButton({
   const getVariantStyles = () => {
     const primary = {
       background: "var(--primary)",
-      color: "var(--background)",
-      border: "none",
+      color: "var(--text)",
+      border: "2px solid var(--background)",
       shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
     };
     const secondary = {

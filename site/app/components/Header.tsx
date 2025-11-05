@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { classNames, theme } from "@/app/styles/theme";
 import CTAButton from "@/app/components/CTAButton";
-import DarkModeToggle from "@/app/components/DarkModeToggle";
+import { ASSET_PATH } from "@/app/config";
 import type { MenuStructure, SiteConfig } from "@/lib/db";
 
 interface HeaderProps {
@@ -19,7 +19,15 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [isDark, setIsDark] = useState(false);
   const pathname = usePathname();
-  const isHomePage = pathname === '/' || pathname === '/shaffercon-migration' || pathname === '/shaffercon-migration/';
+  const isHomePage = pathname === '/';
+  const isCommercialEVPage = pathname === '/commercial-electric-vehicle-chargers' || pathname === '/commercial-electric-vehicle-chargers/';
+  const isVideoOverlayPage = isHomePage || isCommercialEVPage;
+  const showWhiteText = isVideoOverlayPage;
+
+  // Debug logging
+  if (typeof window !== 'undefined' && isCommercialEVPage) {
+    console.log('Commercial EV Page detected. Pathname:', pathname);
+  }
 
   useEffect(() => {
     const checkDarkMode = () => {
@@ -42,38 +50,48 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
 
   return (
     <header
-      className="sticky top-0 z-50"
+      className={isVideoOverlayPage ? "absolute top-0 left-0 right-0 z-50" : "sticky top-0 z-50"}
       style={{
-        background: isHomePage ? "transparent" : "transparent",
-        backdropFilter: isHomePage ? "none" : "blur(20px)",
-        backgroundColor: isHomePage ? "transparent" : "rgba(0, 0, 0, 0.3)",
+        background: isVideoOverlayPage ? "transparent" : "transparent",
+        backdropFilter: isVideoOverlayPage ? "none" : "blur(20px)",
+        backgroundColor: isVideoOverlayPage ? "transparent" : "rgba(0, 0, 0, 0.3)",
         borderBottom: "none",
       }}
     >
       <div className={classNames.container}>
-        <div className="flex justify-between items-center" style={{ height: "80px" }}>
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+        <div className="flex justify-between lg:justify-center items-center" style={{ height: "80px" }}>
+          {/* Logo on mobile/tablet */}
+          <Link href="/" className="lg:hidden flex-shrink-0">
             <Image
-              src={isHomePage ? "/shaffercon-migration/brand-assets/Shaffer-Construction-Logo-light-mode.png" : (isDark ? "/shaffercon-migration/brand-assets/Shaffer-Construction-Logo-dark-mode.png" : "/shaffercon-migration/brand-assets/Shaffer-Construction-Logo-light-mode.png")}
+              src={ASSET_PATH("/images/shaffer-logo-mini.png")}
               alt="Shaffer Construction"
-              width={180}
-              height={75}
+              width={27}
+              height={27}
               className="h-auto"
             />
           </Link>
 
           {/* Desktop Navigation and Phone */}
           <div className="hidden lg:flex items-center space-x-0">
+            {/* Logo (always visible) */}
+            <Link href="/" className="flex-shrink-0 mr-4">
+              <Image
+                src={ASSET_PATH("/images/shaffer-logo-mini.png")}
+                alt="Shaffer Construction"
+                width={27}
+                height={27}
+                className="h-auto"
+              />
+            </Link>
             <nav className="flex items-center space-x-0 whitespace-nowrap">
               {menuData.primaryMenu.map((item) => (
                 <div key={item.label} className="relative group">
                   {item.children && item.label === 'Services' ? (
                     <span
                       className="px-3 py-2 font-medium flex items-center transition-colors whitespace-nowrap cursor-default"
-                      style={{ color: "var(--text)" }}
+                      style={{ color: showWhiteText ? "#ffffff" : "var(--text)" }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = "var(--primary)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = showWhiteText ? "#ffffff" : "var(--text)")}
                     >
                       {item.label}
                       <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,9 +102,9 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
                     <Link
                       href={item.href}
                       className="px-3 py-2 font-medium flex items-center transition-colors whitespace-nowrap"
-                      style={{ color: "var(--text)" }}
+                      style={{ color: showWhiteText ? "#ffffff" : "var(--text)" }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = "var(--primary)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = showWhiteText ? "#ffffff" : "var(--text)")}
                     >
                       {item.label}
                       {item.children && (
@@ -141,16 +159,11 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
             </div>
           </div>
 
-          {/* Dark Mode Toggle */}
-          <div className="hidden lg:flex items-center">
-            <DarkModeToggle />
-          </div>
-
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="lg:hidden p-2 transition-colors"
-            style={{ color: "var(--text)" }}
+            style={{ color: showWhiteText ? "#ffffff" : "var(--text)" }}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -172,13 +185,11 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
                 href={`tel:${menuData.phone}`}
                 className="font-medium transition-colors whitespace-nowrap"
                 style={{
-                  background: "var(--background)",
                   color: "var(--primary)",
                 }}
               >
                 {menuData.phone}
               </a>
-              <DarkModeToggle />
             </div>
             {menuData.primaryMenu
               .filter((item) => item.label !== 'Service Areas' && !item.children)
@@ -208,47 +219,14 @@ export default function Header({ menuData, siteConfig }: HeaderProps) {
             {menuData.primaryMenu
               .filter((item) => item.label === 'Service Areas')
               .map((item) => (
-              <div key={item.label}>
-                {item.children ? (
-                  <button
-                    onClick={() => setOpenSubmenu(openSubmenu === item.label ? null : item.label)}
-                    className="w-full flex justify-between items-center px-3 py-2 font-medium transition-colors"
-                    style={{ color: "var(--text)" }}
-                  >
-                    <span>{item.label}</span>
-                    <svg
-                      className={`w-4 h-4 transition-transform ${openSubmenu === item.label ? 'rotate-180' : ''}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="block px-3 py-2 font-medium transition-colors"
-                    style={{ color: "var(--text)" }}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-                {item.children && openSubmenu === item.label && (
-                  <div className="pl-4 space-y-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        href={child.href}
-                        className="block px-3 py-2 text-sm transition-colors"
-                        style={{ color: "var(--secondary)" }}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link
+                key={item.label}
+                href={item.href}
+                className="block px-3 py-2 font-medium transition-colors"
+                style={{ color: "var(--text)" }}
+              >
+                {item.label}
+              </Link>
             ))}
           </div>
         )}
