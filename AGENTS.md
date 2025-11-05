@@ -6,7 +6,7 @@
 1. **Edit Database**: Update content in `database/data/site.db` using SQL
 2. **Commit Changes**: `git add . && git commit -m "Your message"`
 3. **Push to GitHub**: `git push origin main`
-4. **Auto-Deploy**: GitHub Actions automatically builds and deploys to https://banddude.github.io/shaffercon-migration/
+4. **Auto-Deploy**: GitHub Actions automatically builds and deploys to https://banddude.github.io/shaffercon/
 
 ### Making Code Changes
 1. **Edit Files**: Modify Next.js components in `site/app/` or styles in `site/app/styles/`
@@ -15,8 +15,8 @@
 
 ### Important Notes
 - The site auto-deploys on every push to `main` branch (takes ~2 minutes)
-- Repository: https://github.com/banddude/shaffercon-migration
-- Check deployment status: https://github.com/banddude/shaffercon-migration/actions
+- Repository: https://github.com/banddude/shaffercon
+- Check deployment status: https://github.com/banddude/shaffercon/actions
 
 ---
 
@@ -30,7 +30,7 @@ The site uses a centralized base path configuration in `site/app/config.ts`:
 
 ```typescript
 // Base path for GitHub Pages (should match next.config.mjs basePath)
-export const BASE_PATH = '/shaffercon-migration';
+export const BASE_PATH = '/shaffercon';
 
 // Helper function to prepend base path to any URL
 export const withBasePath = (path: string): string => {
@@ -53,8 +53,8 @@ import { withBasePath } from "@/app/config";
 
 ❌ **WRONG - NEVER hardcode the base path:**
 ```tsx
-<a href="/shaffercon-migration/games/zappy-bird.html">  // NO!
-<img src="/shaffercon-migration/images/logo.png" />    // NO!
+<a href="/shaffercon/games/zappy-bird.html">  // NO!
+<img src="/shaffercon/images/logo.png" />    // NO!
 ```
 
 ### Static HTML Files in public/ Folder
