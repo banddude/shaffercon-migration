@@ -1,6 +1,5 @@
 "use client";
 
-import { SectionHeading, Paragraph } from "@/app/components/UI";
 import { AppleButton } from "@/app/components/UI/AppleStyle";
 import { ASSET_PATH } from "@/app/config";
 
@@ -68,7 +67,7 @@ export default function CTA({
       {/* Contact info at bottom */}
       <div className="relative z-10 w-full px-4 sm:px-6 pb-8 sm:pb-12 cta-bottom">
         <div className="max-w-3xl mx-auto text-center">
-          <Paragraph
+          <p
             style={{
               color: "#d1d5db",
               marginBottom: "1.5rem",
@@ -77,7 +76,7 @@ export default function CTA({
             className="sm:text-lg"
           >
             {text}
-          </Paragraph>
+          </p>
           <AppleButton href={buttonHref} variant="primary" size="lg">
             {buttonText}
           </AppleButton>

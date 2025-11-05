@@ -259,7 +259,7 @@ export default async function Home() {
 
                   {/* Content */}
                   <div className="max-w-4xl mx-auto">
-                    <Paragraph style={{ color: "#d1d5db" }}>{section.content}</Paragraph>
+                    <p className="text-lg leading-relaxed mb-6" style={{ color: "#d1d5db" }}>{section.content}</p>
                   </div>
                 </div>
               </div>
