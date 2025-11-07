@@ -7,6 +7,7 @@ import LinkCardGrid from "@/app/components/LinkCardGrid";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import { FAQPageSchema } from "@/app/components/schemas/FAQPageSchema";
 import { ServiceSchema } from "@/app/components/schemas/ServiceSchema";
+import { LocalBusinessSchema } from "@/app/components/schemas/LocalBusinessSchema";
 
 // Helper function to decode HTML entities
 function decodeHtmlEntities(text: string): string {
@@ -170,6 +171,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <main className="w-full">
+      {/* LocalBusiness Schema */}
+      <LocalBusinessSchema
+        areaServed={locationName}
+        serviceUrl={pageUrl}
+        services={[decodeHtmlEntities(page.title)]}
+      />
+
       {/* Service Schema */}
       <ServiceSchema
         serviceName={decodeHtmlEntities(page.title)}

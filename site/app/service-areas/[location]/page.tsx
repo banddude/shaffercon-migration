@@ -5,6 +5,7 @@ import { Section, Container, PageTitle, SectionHeading, Paragraph, Grid, GridIte
 import CTA from "@/app/components/CTA";
 import LinkCardGrid from "@/app/components/LinkCardGrid";
 import Breadcrumb from "@/app/components/Breadcrumb";
+import { LocalBusinessSchema } from "@/app/components/schemas/LocalBusinessSchema";
 
 // Helper function to decode HTML entities
 function decodeHtmlEntities(text: string): string {
@@ -171,8 +172,24 @@ export default async function LocationPage({ params }: PageProps) {
     notFound();
   }
 
+  const baseUrl = 'https://banddude.github.io/shaffercon';
+  const pageUrl = `${baseUrl}/service-areas/${location}`;
+
+  // Get all service names for this location
+  const allServices = [
+    ...page.residentialServices.map((s: any) => `Residential ${s.service_name.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}`),
+    ...page.commercialServices.map((s: any) => `Commercial ${s.service_name.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}`)
+  ];
+
   return (
     <main className="w-full">
+      {/* LocalBusiness Schema */}
+      <LocalBusinessSchema
+        areaServed={page.location_name}
+        serviceUrl={pageUrl}
+        services={allServices.slice(0, 10)} // Include top 10 services
+      />
+
       {/* Hero Section */}
       <Section border="bottom">
         <Container>
