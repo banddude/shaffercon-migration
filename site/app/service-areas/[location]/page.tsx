@@ -6,6 +6,7 @@ import CTA from "@/app/components/CTA";
 import LinkCardGrid from "@/app/components/LinkCardGrid";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import { LocalBusinessSchema } from "@/app/components/schemas/LocalBusinessSchema";
+import { BreadcrumbSchema } from "@/app/components/schemas/BreadcrumbSchema";
 
 // Helper function to decode HTML entities
 function decodeHtmlEntities(text: string): string {
@@ -188,6 +189,14 @@ export default async function LocationPage({ params }: PageProps) {
         areaServed={page.location_name}
         serviceUrl={pageUrl}
         services={allServices.slice(0, 10)} // Include top 10 services
+      />
+
+      {/* Breadcrumb Schema */}
+      <BreadcrumbSchema
+        items={[
+          { label: "Service Areas", href: "/service-areas" },
+          { label: page.location_name }
+        ]}
       />
 
       {/* Hero Section */}

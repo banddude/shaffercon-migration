@@ -8,6 +8,7 @@ import Breadcrumb from "@/app/components/Breadcrumb";
 import { FAQPageSchema } from "@/app/components/schemas/FAQPageSchema";
 import { ServiceSchema } from "@/app/components/schemas/ServiceSchema";
 import { LocalBusinessSchema } from "@/app/components/schemas/LocalBusinessSchema";
+import { BreadcrumbSchema } from "@/app/components/schemas/BreadcrumbSchema";
 
 // Helper function to decode HTML entities
 function decodeHtmlEntities(text: string): string {
@@ -195,6 +196,16 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           }))}
         />
       )}
+
+      {/* Breadcrumb Schema */}
+      <BreadcrumbSchema
+        items={[
+          { label: "Service Areas", href: "/service-areas" },
+          { label: locationName, href: `/service-areas/${location}` },
+          { label: fullServiceName }
+        ]}
+      />
+
       {/* Hero Section */}
       <Section border="bottom">
         <Container>

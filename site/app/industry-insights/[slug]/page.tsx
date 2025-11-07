@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { classNames } from "@/app/styles/theme";
 import { PageTitle } from "@/app/components/UI";
 import { ArticleSchema } from "@/app/components/schemas/ArticleSchema";
+import { LocalBusinessSchema } from "@/app/components/schemas/LocalBusinessSchema";
 
 interface PageProps {
   params: Promise<{
@@ -50,14 +51,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const baseUrl = 'https://banddude.github.io/shaffercon';
+  const url = `${baseUrl}/industry-insights/${slug}`;
+  const title = post.meta_title || post.title;
+  const description = post.meta_description || '';
+
   return {
-    title: post.meta_title || post.title,
-    description: post.meta_description || '',
-    openGraph: post.og_image
-      ? {
-          images: [post.og_image],
-        }
-      : undefined,
+    title,
+    description,
+    alternates: {
+      canonical: post.canonical_url || url,
+    },
+    openGraph: {
+      title,
+      description,
+      url: post.canonical_url || url,
+      siteName: 'Shaffer Construction',
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: post.date,
+      images: post.og_image ? [post.og_image] : [`${baseUrl}/og-image.jpg`],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: post.og_image ? [post.og_image] : [`${baseUrl}/og-image.jpg`],
+    },
   };
 }
 
@@ -87,6 +107,11 @@ export default async function BlogPostPage({ params }: PageProps) {
         datePublished={post.date}
         image={post.og_image}
         url={articleUrl}
+      />
+      <LocalBusinessSchema
+        areaServed="Los Angeles"
+        serviceUrl={articleUrl}
+        services={["EV Charger Installation", "Electrical Services", "Load Study Services"]}
       />
       <article className="max-w-4xl mx-auto">
         {/* Post Header */}

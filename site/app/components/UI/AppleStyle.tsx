@@ -12,6 +12,7 @@ interface AppleHeroProps {
   title: string;
   subtitle?: string;
   image?: string;
+  imageAlt?: string;
   imageFit?: "cover" | "contain";
   children?: ReactNode;
   showLogo?: boolean;
@@ -21,6 +22,7 @@ export function AppleHero({
   title,
   subtitle,
   image,
+  imageAlt,
   imageFit = "cover",
   children,
   showLogo = false,
@@ -46,6 +48,7 @@ export function AppleHero({
               playsInline
               preload="auto"
               className="w-full h-full object-cover"
+              aria-label={imageAlt || title}
               style={{
                 objectFit: imageFit,
                 filter: "brightness(0.7)",
@@ -57,7 +60,7 @@ export function AppleHero({
           ) : isGif ? (
             <img
               src={image}
-              alt="Background"
+              alt={imageAlt || title}
               className="w-full h-full object-cover"
               style={{
                 objectFit: imageFit,

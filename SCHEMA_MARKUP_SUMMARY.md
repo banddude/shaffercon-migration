@@ -145,6 +145,52 @@ Added comprehensive JSON-LD structured data schema markup to improve search engi
 }
 ```
 
+### 4. LocalBusiness Schema (822 location-specific pages)
+
+**Location:** `/service-areas/[location]/` and `/service-areas/[location]/[service]/`
+
+**Component:** `LocalBusinessSchema.tsx`
+
+**What it does:**
+- Provides location-specific business information
+- Critical for local SEO and "near me" searches
+- Shows services offered in each specific area
+- Includes contact info, hours, ratings for that location
+
+**Data included:**
+- Business name with location (e.g., "Shaffer Construction, Santa Monica")
+- Area served (specific city)
+- Services offered in that area
+- Contact information (phone, email)
+- Physical address and geo coordinates
+- Aggregate rating and review count
+- Opening hours
+- Service catalog specific to location
+
+**Example output:**
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Electrician",
+  "name": "Shaffer Construction, Santa Monica",
+  "description": "Professional electrical contractor serving Santa Monica and surrounding areas...",
+  "url": "https://banddude.github.io/shaffercon/service-areas/santa-monica",
+  "telephone": "323-642-8509",
+  "email": "hello@shaffercon.com",
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Santa Monica"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Electrical Services in Santa Monica",
+    "itemListElement": [...]
+  }
+}
+```
+
 ---
 
 ## Coverage
@@ -152,16 +198,17 @@ Added comprehensive JSON-LD structured data schema markup to improve search engi
 **Total pages with schema markup:**
 - ✅ 235 blog posts with Article schema
 - ✅ 800+ service pages with Service schema
-- ✅ 800+ service pages with FAQPage schema (where FAQs exist)
+- ✅ 761 service pages with FAQPage schema (where FAQs exist)
+- ✅ 822 location-specific pages with LocalBusiness schema (22 location pages + 800 service pages)
 - ✅ 1 homepage with LocalBusiness schema (already existed)
 - ✅ 1,073 pages with BreadcrumbList schema (already existed)
 
 **Total schema types on site:**
-1. LocalBusiness/Electrician (homepage)
+1. LocalBusiness/Electrician (homepage + 822 location-specific pages)
 2. BreadcrumbList (all pages)
-3. Article (blog posts)
-4. FAQPage (service pages with FAQs)
-5. Service (service pages)
+3. Article (235 blog posts)
+4. FAQPage (761 service pages with FAQs)
+5. Service (800+ service pages)
 
 ---
 
@@ -343,12 +390,14 @@ Not implemented yet but could be added:
 
 **Files modified:**
 - `/app/industry-insights/[slug]/page.tsx` (Article schema)
-- `/app/service-areas/[location]/[service]/page.tsx` (Service + FAQ schema)
+- `/app/service-areas/[location]/[service]/page.tsx` (LocalBusiness + Service + FAQ schema)
+- `/app/service-areas/[location]/page.tsx` (LocalBusiness schema)
 
 **Components created:**
 - `ArticleSchema.tsx` (blog posts)
 - `FAQPageSchema.tsx` (FAQ sections)
 - `ServiceSchema.tsx` (service pages)
+- `LocalBusinessSchema.tsx` (location-specific pages)
 
 ---
 
