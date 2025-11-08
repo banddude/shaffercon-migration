@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import Link from "next/link";
 import { theme, typographySizes } from "@/app/styles/theme";
 import { ASSET_PATH } from "@/app/config";
 
@@ -254,7 +255,7 @@ export function AppleCard({
 
         {/* CTA Link */}
         {href && (
-          <a
+          <Link
             href={href}
             className="inline-flex items-center font-semibold group/link transition-colors duration-300"
             style={{ color: "var(--primary)" }}
@@ -273,7 +274,7 @@ export function AppleCard({
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </a>
+          </Link>
         )}
       </div>
     </div>
@@ -451,9 +452,9 @@ export function AppleButton({
 
   if (href) {
     return (
-      <a href={href} className={baseClasses} style={getStyles()}>
+      <Link href={href} className={baseClasses} style={getStyles()}>
         {children}
-      </a>
+      </Link>
     );
   }
 
