@@ -33,22 +33,12 @@ export default function ContactForm({ title, siteConfig }: ContactFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Create pre-filled GitHub issue
-    const issueTitle = encodeURIComponent(`Contact: ${formData.firstName} ${formData.lastName}`);
-    const issueBody = encodeURIComponent(
-      `**Contact Form Submission**\n\n` +
-      `**Name:** ${formData.firstName} ${formData.lastName}\n` +
-      `**Email:** ${formData.email}\n` +
-      `**Phone:** ${formData.phone}\n` +
-      `**Address:** ${formData.address}\n\n` +
-      `**Message:**\n${formData.message}\n\n` +
-      `---\n*Submitted: ${new Date().toLocaleString()}*`
-    );
+    // Construct mailto link with form data
+    const mailtoLink = `mailto:${config.contact.email}?subject=Service Request&body=${encodeURIComponent(
+      `Name: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nAddress: ${formData.address}\n\nMessage:\n${formData.message}`
+    )}`;
 
-    const githubIssueUrl = `https://github.com/banddude/shaffercon/issues/new?title=${issueTitle}&body=${issueBody}&labels=contact-form`;
-
-    // Open GitHub issue in new tab
-    window.open(githubIssueUrl, '_blank');
+    window.location.href = mailtoLink;
     setSubmitted(true);
   };
 
