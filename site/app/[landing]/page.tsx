@@ -830,7 +830,7 @@ export default async function ServiceLandingPage({ params }: PageProps) {
               };
 
               return (
-                <Section key={index} padding="lg" background="gray">
+                <section key={index} className="py-16" style={{ background: "var(--section-gray)" }}>
                   <Container maxWidth="xl">
                     <AppleGrid columns={2} gap="lg">
                       {infoCards.map((card: any, cardIdx: number) => (
@@ -843,7 +843,7 @@ export default async function ServiceLandingPage({ params }: PageProps) {
                       ))}
                     </AppleGrid>
                   </Container>
-                </Section>
+                </section>
               );
             }
 
