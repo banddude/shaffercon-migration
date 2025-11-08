@@ -27,17 +27,23 @@ jobs:
       - name: Save submission to JSON
         run: |
           FILENAME="leads/$(date -u +%Y-%m-%d_%H-%M-%S)_${{ github.event.client_payload.email }}.json"
-          cat > "$FILENAME" <<EOF
-          {
-            "timestamp": "${{ steps.timestamp.outputs.timestamp }}",
-            "firstName": "${{ github.event.client_payload.firstName }}",
-            "lastName": "${{ github.event.client_payload.lastName }}",
-            "email": "${{ github.event.client_payload.email }}",
-            "phone": "${{ github.event.client_payload.phone }}",
-            "address": "${{ github.event.client_payload.address }}",
-            "message": "${{ github.event.client_payload.message }}"
-          }
-          EOF
+          jq -n \
+            --arg timestamp "${{ steps.timestamp.outputs.timestamp }}" \
+            --arg firstName "${{ github.event.client_payload.firstName }}" \
+            --arg lastName "${{ github.event.client_payload.lastName }}" \
+            --arg email "${{ github.event.client_payload.email }}" \
+            --arg phone "${{ github.event.client_payload.phone }}" \
+            --arg address "${{ github.event.client_payload.address }}" \
+            --arg message "${{ github.event.client_payload.message }}" \
+            '{
+              timestamp: $timestamp,
+              firstName: $firstName,
+              lastName: $lastName,
+              email: $email,
+              phone: $phone,
+              address: $address,
+              message: $message
+            }' > "$FILENAME"
 
       - name: Commit submission
         run: |
