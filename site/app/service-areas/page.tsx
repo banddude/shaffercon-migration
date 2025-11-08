@@ -1,5 +1,6 @@
 import { getDb } from "@/lib/db";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ASSET_PATH } from "@/app/config";
 import { AppleButton } from "@/app/components/UI/AppleStyle";
 import { SectionHeading, Paragraph } from "@/app/components/UI";
@@ -186,7 +187,7 @@ export default async function ServiceAreasPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {locations.map(location => (
-                <a
+                <Link
                   key={location.location_slug}
                   href={`/service-areas/${location.location_slug}`}
                   className="block p-6 rounded-lg transition-all hover:translate-y-[-4px] group"
@@ -208,7 +209,7 @@ export default async function ServiceAreasPage() {
                   <span className="text-base font-semibold group-hover:translate-x-1 inline-flex items-center transition-transform" style={{ color: "var(--primary)" }}>
                     View Services →
                   </span>
-                </a>
+                </Link>
               ))}
 
               {/* And More Card */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMapEvents } from "react-leaflet";
 import { Icon } from "leaflet";
 import { MapPin } from "lucide-react";
@@ -195,13 +196,13 @@ export default function ServiceAreasMap({ locations }: ServiceAreasMapProps) {
                   <h3 className="text-lg font-bold mb-2" style={{ color: "var(--text)" }}>
                     {location.location_name}
                   </h3>
-                  <a
+                  <Link
                     href={`/service-areas/${location.location_slug}`}
                     className="text-base font-semibold inline-flex items-center"
                     style={{ color: "var(--primary)" }}
                   >
                     View Services →
-                  </a>
+                  </Link>
                 </div>
               </Popup>
             </Marker>
