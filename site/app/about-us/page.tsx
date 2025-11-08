@@ -125,7 +125,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Core Values Section */}
-      <Section padding="lg" background="gray">
+      <section className="py-12 sm:py-20 lg:py-28" style={{ background: "var(--section-gray)" }}>
         <Container maxWidth="xl">
           <SectionHeading className="text-center mb-12">What Sets Us Apart</SectionHeading>
           <AppleGrid columns={2} gap="lg">
@@ -139,7 +139,7 @@ export default function AboutPage() {
             ))}
           </AppleGrid>
         </Container>
-      </Section>
+      </section>
 
       {/* Closing Section */}
       <Section padding="lg">

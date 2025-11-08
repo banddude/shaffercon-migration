@@ -92,7 +92,7 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <Section padding="lg" background="gray">
+      <section className="py-12 sm:py-20 lg:py-28" style={{ background: "var(--section-gray)" }}>
         <Container maxWidth="xl">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Phone */}
@@ -132,7 +132,7 @@ export default function ContactPage() {
             </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
       {/* Contact Form Section */}
       <Section padding="lg">
