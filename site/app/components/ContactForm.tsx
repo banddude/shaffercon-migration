@@ -35,7 +35,7 @@ export default function ContactForm({ title, siteConfig }: ContactFormProps) {
 
     try {
       // Submit to Cloudflare Worker (GitHub token is secure on the server)
-      const response = await fetch('https://shaffercon-contact-form.mikejshaffer.workers.dev', {
+      const response = await fetch('https://api.shaffercon.com/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
